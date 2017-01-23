@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Speech to text converter using WebSpeech API</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" />
+		<style type="text/css">
+			body{
+				font-family: verdana;
+				 width: 100%;
+  
+    			overflow-x: hidden;
+			}
+			.spinner{
+    width: 80px;
+    height: 80px;
+    
+    border: 2px solid #f3f3f3;
+    border-top:3px solid #f25a41;
+    border-radius: 100%;
+    
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right: 0;
+    margin: auto;
+    
+    animation: spin 1s infinite linear;
+}
+
+
+			#result{
+				height: 200px;
+				border: 1px solid #ccc;
+				padding: 10px;
+				box-shadow: 0 0 10px 0 #bbb;
+				margin-bottom: 30px;
+				font-size: 14px;
+				line-height: 25px;
+			}
+			button{
+				font-size: 20px;
+				position: absolute;
+				top: 240px;
+				left: 50%;
+			}
+		</style>
+</head>
+<body>
+ 
+  <h4 align="center">Speech to text converter in JS</h4>
+		<div id="result">
+		 <label>Get the converted text here:</label>
+		 <input type="text" id="result1" size="40" maxlength=100>
+		</div>
+		<!--click this button and then start speaking-->
+		<button onclick="startConverting();"><i class="fa fa-microphone"></i></button>
+		<!-- click this button to stop converting-->
+		<button style="position:absolute; left:61%; top:240px;" onclick="stopConverting();"><i class="fa fa-remove"></i></button>
+		<script type="text/javascript">
+		
+		var overlay = document.getElementById("overlay");
+
+		
+		
+			var r = document.getElementById('result1');
+			var speechRecognizer = new webkitSpeechRecognition();// a new speech recognition object
+			
+			//function to start listening to voice and then convert it to text
+			function startConverting () {
+				if('webkitSpeechRecognition' in window){
+					
+					speechRecognizer.continuous = true;
+					speechRecognizer.interimResults = true;
+					speechRecognizer.lang = 'en-IN';
+					speechRecognizer.start();
+
+					var finalTranscripts = '';
+
+					speechRecognizer.onresult = function(event){
+						var interimTranscripts = '';
+						for(var i = event.resultIndex; i < event.results.length; i++){
+							var transcript = event.results[i][0].transcript;
+							transcript.replace("\n", "<br>");
+							if(event.results[i].isFinal){
+								finalTranscripts += transcript;
+							}else{
+								interimTranscripts += transcript;
+							}
+						}
+						r.value = finalTranscripts + interimTranscripts ;
+					};
+					speechRecognizer.onerror = function (event) {
+					};
+				}else{
+					r.innerHTML = 'Your browser is not supported. If google chrome, please upgrade!';
+				}
+			}
+
+			//function to stop listening
+			function stopConverting()
+			{
+				speechRecognizer.stop();
+			}
+
+		
+		</script>
+</body>
+</html>
