@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<input type="text" id="res" placeholder="type something">
+<button onclick="startspeaking()">Speak out</button>
+
+   <script>
+  
+   
+// say a message
+function speak(text, callback) {
+    var u = new SpeechSynthesisUtterance();
+    u.text = text;
+    u.lang = 'en-US';
+ 
+    u.onend = function () {
+        if (callback) {
+            callback();
+        }
+    };
+ 
+    u.onerror = function (e) {
+        if (callback) {
+            callback(e);
+        }
+    };
+ 
+    speechSynthesis.speak(u);
+} 
+
+function startspeaking(){
+	var n=document.getElementById('res').value;
+	speak(n);
+}
+</body>
+</html>
