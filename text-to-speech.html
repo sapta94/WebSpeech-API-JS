@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Text to Speech</title>
 </head>
 <body>
 <input type="text" id="res" placeholder="type something">
@@ -31,7 +31,7 @@ function speak(text, callback) {
  
     speechSynthesis.speak(u);
 } 
-
+//function to start the conversion
 function startspeaking(){
 	var n=document.getElementById('res').value;
 	speak(n);
